@@ -1,0 +1,1005 @@
+---
+title: "DSC 011 Sp26 Capstone Take-Home Lab 14 Assignment: Create a Professional Academic CV on Overleaf"
+author: "FirstName LastName"
+date: today
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    theme: cosmo
+    code-fold: false
+    include-in-header:
+      text: |
+        <style>
+        kbd {
+          display: inline-block;
+          padding: 2px 6px;
+          font-size: 0.85em;
+          font-family: monospace;
+          background-color: #f5f5f5;
+          border: 1px solid #ccc;
+          border-bottom: 2px solid #aaa;
+          border-radius: 3px;
+        }
+        </style>
+editor: source
+engine: knitr
+execute:
+  echo: true
+urlcolor: blue
+linkcolor: blue
+---
+
+## Introduction and Background to this Assignment
+
+### Purpose of this Assignment
+
+**In this DSC 011 Lab 14 final project, you will create your own real
+professional academic Curriculum Vitae (CV)** and be graded on its content, style, and the technical skills required to produce it. 
+
+Academics use CVs analogously to resumes, when they apply for research positions, including jobs, internships, fellowships and graduate school, and as a "calling-card" document that lists your academic and professional merits for when you request letters of reference or recommendation from Professors to support you when you submit such applications. The intent of this assignment is for you to practice your skills in reproducible computing and authoring and apply them towards practice in making a document that represents you academically for future practical use as a data scientist. 
+
+This final assignment will also **give you more experience in using Git** and integrating tools like RStudio with it. You will complete a full local `git` round-trip — cloning your Overleaf project, editing it in RStudio, and pushing the change back to Overleaf. You will also gain **experience in networking with passwordless authentication** to sync projects with Overleaf.
+
+### Estimated Time to Complete this Project and Expected Products
+
+You will have **4-5 days to complete this assignment.** 
+
+It should take **between 2 and 3 hours to complete,** most of which time should be spent writing your CV.
+
+**By the end of this project you will have:**
+
+- **a short professional CV compiled to PDF (Portable Document Format) with
+  zero $\LaTeX$ errors** — a document that you can actually use when applying
+  to research labs, REU (Research Experience for Undergraduates) programs,
+  or graduate school — **and one that you should provide to any Professor
+  when you request them to write you a letter of recommendation for a
+  fellowship, internship, summer program, industry job, or graduate school,**
+  and
+- **a full local git workflow on a real research tool** — the same workflow
+  used to maintain research manuscripts and grant proposals.
+
+::: {.callout-note title="Estimated time — plan accordingly"}
+| Section | Task | Estimated time |
+|---|---|---|
+| 2 | Read required skills | 10 min |
+| 3 | Choose a template | 10 min |
+| 4 | Set up Overleaf, open template, verify compile | 15 min |
+| 5 | Edit CV content | 60–90 min |
+| 6 | Add required $\LaTeX$ feature | 10 min |
+| 7 | Set up local project, clone, configure git | 25 min |
+| 8 | Local edit, commit, push, render notebook | 20 min |
+| 9 | Final commit and submit | 10 min |
+| **Total** | | **2–2.5 hours** |
+
+The CV content in Section 5 is the dominant variable. If you have never
+written a CV before, budget closer to 90 minutes for that section alone.
+The git setup in Section 7 is the second most likely source of delay —
+read the callout boxes carefully and do not skip steps.
+:::
+
+A grading rubric is provided below.
+
+### About $\LaTeX$ and Overleaf
+
+To make your professional academic CV, you will use $\LaTeX$ (pronounced
+*"La-Tech"*), the free markup-based desktop publishing system you have
+already encountered because Markdown and Jupyter notebooks use $\LaTeX$ to
+typeset mathematical equations into their rendered outputs, and RStudio uses
+$\LaTeX$ intermediates to produce PDF outputs from Quarto and Jupyter
+notebooks. **A good CV typeset in $\LaTeX$ sets you apart from other applicants by demonstrating technical skills in computing and reproducible authoring.**
+
+::: {.callout-note title="Why $\LaTeX$ for a CV?"}
+$\LaTeX$ is not just a formatting tool — it is a **declarative description** of
+a document, just as a bash script is a declarative description of a data
+pipeline. You have already worked with Quarto Markdown, which compiles to
+$\LaTeX$ under the hood when producing PDF output. A $\LaTeX$ CV takes the same
+idea one step further: appearance is entirely determined by source code,
+version-controllable with `git`, and reproducible on any machine with a TeX
+installation. Every journal article and grant proposal in the sciences is
+written this way.
+:::
+
+You will also use [Overleaf](https://www.overleaf.com) — the free,
+browser-based collaborative $\LaTeX$ editor used by researchers and graduate
+students worldwide. Overleaf is a cloud-based collaborative authoring service
+allowing multiple authors to collaboratively edit the same document online in
+real-time, not unlike Google Docs. Unlike Google Docs however, Overleaf
+integrates `git` so that authors can edit offline and sync their changes with
+the online version at Overleaf asynchronously. **As a UC Merced student you
+are entitled to sign up for your own free and feature-rich Overleaf Pro
+account. You must sign up using your `@ucmerced.edu` email address.**
+
+::: {.callout-note title="What Overleaf Pro gives you — and why it matters for this assignment"}
+UC Merced students receive Overleaf Pro automatically by signing up with
+their `@ucmerced.edu` address. Pro unlocks several features that are directly
+relevant to this assignment:
+
+- **Full project history** — view and restore any previous version of your
+  `.tex` file going back to the beginning of the project. Free accounts only
+  get 24 hours of history. This is your undo button if you make a breaking
+  change.
+- **Git integration** — clone, push, and pull your Overleaf project as a
+  real git repository. This is what the local editing section of this lab
+  depends on; it is a Pro-only feature.
+- **Extended compile time** — up to 4 minutes per compile instead of 1.
+  Required for complex templates with many packages.
+- **Unlimited collaborators** — share your project with your PI, advisor,
+  or peers for feedback with no cap on the number of editors.
+- **Priority support** — faster responses from the Overleaf support team.
+
+**Further reading:**
+[Overleaf documentation](https://docs.overleaf.com) |
+[Learn $\LaTeX$ in 30 minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes) |
+[Full $\LaTeX$ reference](https://www.overleaf.com/learn) |
+[Overleaf how-to guides](https://www.overleaf.com/learn/how-to) |
+[Premium features explained](https://docs.overleaf.com/getting-started/free-and-premium-plans/premium-features)
+:::
+
+#### Some Extra Tips and Advice on Using Overleaf 
+
+::: {.callout-tip title="Navigating the Overleaf editor"}
+The Overleaf interface has three main areas:
+
+- **File tree** (left panel) — lists all files in your project. Most
+  templates have one main `.tex` file and possibly a `.cls` or `.sty` file
+  for styling. Click any file to open it in the editor. Do not delete or
+  rename `.cls` or `.sty` files — they define your template's appearance.
+- **Code editor** (center panel) — where you edit your `.tex` source. $\LaTeX$
+  commands are highlighted in blue. **Your actual content (name, experience,
+  skills) goes between the `\begin{document}` and `\end{document}` lines.**
+- **PDF preview** (right panel) — updates each time you click **Recompile**.
+  Click any point in the PDF to jump to the corresponding line in the editor,
+  and vice versa.
+
+**Useful keyboard shortcuts:** <kbd>Ctrl</kbd>+<kbd>Enter</kbd> (or
+<kbd>Cmd</kbd>+<kbd>Enter</kbd>) recompiles without reaching for the mouse.
+<kbd>Ctrl</kbd>+<kbd>/</kbd> comments or uncomments the current line —
+useful for temporarily hiding a block to isolate a compile error.
+:::
+
+::: {.callout-tip title="Undoing changes — using Overleaf's version history"}
+If you make a change that breaks your CV and cannot figure out how to fix
+it, **do not panic** — your Overleaf Pro account stores the full history of
+every change. To restore a previous version:
+
+(@) Click **History** in the top menu bar (clock icon).
+(@) Browse the timeline on the right — each save is listed with a timestamp.
+(@) Click any version to preview it. When you find a good state, click
+    **Restore this version**.
+
+You can also label important checkpoints: click the flag icon next to any
+history entry and give it a name (e.g., "before adding Skills section").
+This is the Overleaf equivalent of a git commit message.
+
+**Note:** you can also recover from local changes via git — `git log` and
+`git checkout` work on the cloned repo exactly as in any other project.
+:::
+
+::: {.callout-caution title="Debugging compile errors"}
+When Overleaf shows a red error banner after recompiling, click **Logs and
+output files** (the icon to the right of the Recompile button) to read the
+full compile log. Key strategies:
+
+- **Read the first error, not the last.** $\LaTeX$ errors cascade — one missing
+  brace can generate dozens of downstream errors. Fix the first one and
+  recompile before addressing others.
+- **Look for the line number.** Error messages usually include `l.42` or
+  similar — this is the line in your `.tex` file where $\LaTeX$ got confused.
+  Click the line number in the log to jump there in the editor.
+- **Comment out recent changes.** If the template compiled cleanly before
+  your edits, use <kbd>Ctrl</kbd>+<kbd>/</kbd> to comment out your most
+  recent additions one block at a time until the error disappears — that
+  block is the culprit.
+- **Common causes:** mismatched `{` and `}` braces; special characters (`&`,
+  `%`, `$`, `#`, `_`) used outside of $\LaTeX$ commands (escape them as `\&`,
+  `\%`, `\$`, `\#`, `\_`); wrong compiler for the template (check
+  **Menu → Compiler**).
+- **Search the error message.** Paste the key phrase from the error into
+  [the Overleaf documentation](https://www.overleaf.com/learn) or a search
+  engine — most $\LaTeX$ errors have well-documented solutions.
+:::
+
+---
+
+### About the Content of your CV: Representing your Skills Well
+
+**Please study this section carefully regarding the content of your CV, before you open Overleaf** and start working on this project.
+
+::: {.callout-tip title="How to describe any skill honestly — including introductory-level skills"}
+**List the skills that you have experience with using, not what you wish you knew or mastered** A research PI
+will ask you about anything on your CV. Describe your experience at the level
+you can defend in a five-minute conversation.
+
+**List skills that you have only at the introductory level —-- that is completely
+normal and expected for an undergraduate and represent your mastery honestly.** You do not need to be an expert
+to list a skill. What matters is that you can describe honestly what you have
+done with it. 
+
+**Some framing strategies for honest listing of skills:**
+
+- Add a qualifier that signals scope without underselling: *"R (tidyverse,
+  ggplot2 — one semester coursework)"* or *"Python (data pipelines via
+  `uv`)"* is more credible than a bare *"Python"* with no context.
+- Use action-based descriptions in your Projects section to do the work:
+  *"implemented bootstrap resampling in base R"* shows what you can do
+  without claiming expertise.
+- Avoid skill bars, ratings, or percentages (e.g., "Python — 60%"). These
+  are meaningless and flag inexperience with CV conventions.
+- Never list a tool you have only heard of. If you have run one `awk`
+  one-liner in a lab, *"UNIX text processing (awk, grep)"* is fair.
+  *"Perl"* on its own is not.
+
+A PI reading an undergraduate CV expects introductory exposure, not mastery.
+**Honest, specific, and contextualized beats inflated and vague every time.**
+:::
+
+**For full credit on this assignment, your CV must include a Skills section containing all of the skill groups described below.** Knowing what the finished product
+must contain will help you make good decisions about section naming and layout
+as you edit your template. You may add additional skills; these are the
+minimum required for full credit:
+
+#### Languages & Scripting
+
+- **R** — base R and tidyverse/ggplot2
+- **Python** — dependency and environment management via `uv`; indirect
+  exposure through polyglot pipeline tooling
+- **Bash / UNIX shell scripting**
+- **Regular expressions** — grep, awk, Perl one-liners
+
+#### Reproducible Research & Authoring
+
+- **Quarto Markdown**
+- **Jupyter Lab**
+- **$\LaTeX$ / Overleaf** (you may typeset $\LaTeX$ in its special way to
+  show your skill, by typing `\LaTeX` in a $\LaTeX$ document, or writing
+  `$\LaTeX$` in a Markdown document)
+- **Git** (version control)
+
+#### Data Science Methods
+
+- OSEMN (Obtain, Scrub, Explore, Model, iNterpret) data pipeline methodology
+- Statistical inference: bootstrap resampling and permutation testing
+- Bayesian estimation
+- Data visualization (base R and ggplot2)
+
+#### Tools & Environments
+
+- RStudio
+- Linux / UNIX command line
+- `uv` (Python reproducible environments)
+
+#### AI-Assisted Development *(optional but recommended)*
+
+::: {.callout-tip title="Why include this — and how to frame it"}
+Employers and research supervisors are actively looking to hire students who
+know how to incorporate AI tools effectively into their work. This is a
+**genuinely valued and increasingly expected skill** in both industry and
+academic research settings. If you have used AI tools in your coursework —
+which you have — including this section signals that you are prepared for
+modern technical work environments.
+
+The competency is not *"I used AI"* — it is *"I know how to direct AI tools
+effectively, evaluate their output critically, and integrate correct results
+into reproducible work."* Honest framings for your CV:
+
+> *AI-assisted development (Claude) — prompt engineering, output
+> verification, and debugging in polyglot R/Python/bash pipelines*
+
+> *Proficient in AI-augmented coding workflows; experience evaluating and
+> correcting model-generated code in reproducible data science contexts*
+
+Avoid *"used AI to accelerate productivity"* — that undersells the epistemic
+skill. Emphasize critical use: you prompted, evaluated, corrected, and took
+responsibility for the final result.
+:::
+
+If you include this section, add an entry such as:
+
+- AI-assisted coding and debugging (Claude, GitHub Copilot, or similar)
+  — prompt engineering, output verification, and integration into
+  reproducible R/Python workflows
+
+### Grading Rubric for this Assignment
+
+::: {.callout-note title="Grading Rubric — 45 points total"}
+
+#### Content (15 points) — *Does the CV tell a credible research story?*
+
+| Score | Criteria |
+|---|---|
+| 15 | All required skill categories present and accurately described; education, coursework/experience, and projects complete; CV reads as a coherent research narrative suitable for a PI or REU application |
+| 11–14 | Most required skills present; minor omissions or vague descriptions in one section |
+| 7–10 | Several required skills missing or misrepresented; content thin or generic |
+| 0–6 | Major sections absent; skills list perfunctory, fabricated, or placeholder text remaining |
+
+#### Formatting (15 points) — *Does it look like a professional research CV?*
+
+| Score | Criteria |
+|---|---|
+| 15 | Consistent typography, spacing, and alignment; one page (or two pages for moderncv/Awesome CV, or if content genuinely fills a second page with no blank space); section order appropriate for research audience (Education first); name and contact prominent |
+| 11–14 | Mostly consistent; minor spacing or alignment issues |
+| 7–10 | Noticeable inconsistencies; section order unclear or inappropriate; or a half-empty second page that should have been tightened |
+| 0–6 | Template largely unmodified, placeholder text remaining, or formatting distracting |
+
+#### Technical Proficiency (15 points) — *Can you drive the toolchain?*
+
+| Score | Criteria |
+|---|---|
+| 15 | PDF compiles with **zero errors**; valid shareable Overleaf link submitted; non-trivial $\LaTeX$ feature used; full local git round-trip with meaningful commit message; `git log` chunk shows ≥ 3 commits; warnings documented |
+| 11–14 | Compiles cleanly; link valid; round-trip done but commit message trivial or log chunk missing |
+| 7–10 | Compiles with warnings; or round-trip incomplete; or $\LaTeX$ feature absent |
+| 0–6 | Compile errors; or Overleaf link missing; or PDF not submitted; or no evidence of local git use |
+
+:::
+
+---
+
+### Submission Deadlines for this Assignment
+
+::: {.callout-important title="Deadlines"}
+**Thursday May 7, 12:00 pm (noon)** — submit by this time to receive written
+feedback and the opportunity to regrade. Feedback will be returned by
+midnight Thursday.
+
+**Friday May 8, 11:59 pm** — final deadline. Submissions received after
+Thursday noon will be graded but are not eligible for feedback or regrading.
+:::
+
+---
+
+
+---
+
+## Assignment Instructions
+
+### Choose a Template for your CV on Overleaf
+
+Browse the options below and decide which template you want **before**
+creating your Overleaf account — you will open your chosen template directly
+when you sign up. You may also use a template other than those listed below,
+but study the grading rubric carefully to ensure your output earns full
+credit.
+
+#### Recommended — compile with pdflatex (default, no extra setup)
+
+**[Jake's Resume](https://www.overleaf.com/latex/templates/jakes-resume/syzfjbzwjncs)**
+— The most widely used technical CV on Overleaf. Clean one-column layout,
+safe for Applicant Tracking Systems (ATS — the software employers use to
+scan and filter CVs automatically), compiles with standard pdflatex. Adapts
+perfectly for research CVs: rename *Work Experience* → *Research Experience*
+and *Projects* → *Coursework Projects*. Put Education first for academic
+audiences. **Recommended for most students.**
+
+**[moderncv (Classic style)](https://www.overleaf.com/latex/templates/modern-cv-and-cover-letter/sttkgjcysttn)**
+— Multi-page CV with a matching cover letter template. The *classic* style
+reads professionally to faculty and PIs. Four color/style themes switchable
+with a single line. Best choice if you are cold-emailing a PI or applying to
+a formal REU, since the cover letter is included. Compiles with pdflatex.
+
+#### Advanced — require XeLaTeX (extra setup step)
+
+::: {.callout-caution title="XeLaTeX templates require a compiler change in Overleaf"}
+If you choose a template below you must change the compiler before editing:
+**Menu → Compiler → XeLaTeX**. Skipping this step is the most common cause
+of compile errors. If you are not confident with Overleaf yet, choose Jake's
+Resume or moderncv instead.
+:::
+
+**[AltaCV](https://www.overleaf.com/latex/templates/altacv-template/gqxmqsvsbxfg)**
+— Two-column layout with a sidebar for skills and contact. Visually polished.
+Sidebar icons are not ATS-friendly (they confuse automated CV scanners) and
+can be removed. Requires XeLaTeX.
+
+**[Awesome CV — Biological Sciences variant](https://www.overleaf.com/latex/examples/academic-cv-template/hvjpfjnyggbf)**
+— Adapted for biological and computational sciences. Relevant for students
+in bioinformatics or computational biology. Requires XeLaTeX.
+### Set Up Your Free Overleaf Account and CV Project
+
+(@) Go to [overleaf.com](https://www.overleaf.com). Your UC Merced
+    `@ucmerced.edu` email gives you **Overleaf Pro** at no cost — use it to
+    log in or create your account.
+
+(@) Navigate to your chosen template link from Section 3. Click **Open as
+    Template**. Overleaf creates a personal copy in your account.
+
+(@) In your new project, click **Menu** (top left) and confirm:
+    - **Compiler** matches your template (pdflatex for Jake's/moderncv;
+      XeLaTeX for AltaCV/Awesome CV).
+    - **Main document** is the correct `.tex` file (usually `main.tex` or
+      `resume.tex`).
+
+(@) Click the green **Recompile** button and confirm the template compiles
+    to a PDF with **no errors** before making any edits. If it does not
+    compile cleanly out of the box, choose a different template.
+
+::: {.callout-important title="Copy and save your Overleaf project link now"}
+Copy the URL from your browser address bar — it looks like:
+
+```
+https://www.overleaf.com/project/6xxxxxxxxxxxxxxxxxxxxxxx
+```
+
+**Your Overleaf project link:**
+
+**Paste this link here within the triple backticks.**
+
+```
+https://www.overleaf.com/project/   ← paste your project URL here
+```
+
+Set your project to *Anyone with the link can view*: click **Share** (top
+right) → turn on link sharing → set to *Can view*. **Do this now before you
+forget.**
+:::
+
+---
+
+### Edit Your CV Content
+
+(@) Replace all placeholder text with your own information:
+    - **Name and contact** — UC Merced email; omit street address.
+    - **Education** — UC Merced, degree program, expected graduation year,
+      GPA (if ≥ 3.0).
+    - **Research / Work Experience** — lab work, research assistantships,
+      relevant jobs. If you have none yet, add a *Relevant Coursework*
+      section listing DSC 011, BIO 182 (if applicable), and other technical
+      courses.
+    - **Skills** — all required groups from Section 2.
+    - **Projects** — the Baby Names OSEMN pipeline project belongs here.
+
+::: {.callout-tip title="Describing the Baby Names project"}
+A strong bullet point for a research CV:
+
+> *Designed and implemented a polyglot OSEMN data pipeline (bash, Perl, R)
+> to obtain, scrub, and analyze U.S. Social Security baby name frequency
+> data; managed Python tooling via `uv`; produced reproducible HTML report
+> with Quarto Markdown.*
+
+Tailor the language to what you actually built and ran.
+:::
+
+(@) Reorganize sections into the preferred academic order:
+
+    1. Education
+    2. Research Experience (or Relevant Experience)
+    3. Projects
+    4. Skills
+    5. Awards / Honors *(if applicable)*
+
+(@) **Aim for one page.** One page is the professional standard for
+    undergraduates and makes the strongest impression. Two pages is
+    acceptable if your content genuinely fills it — but a half-empty second
+    page looks worse than a tight one-pager. The goal is a CV with no wasted
+    space, not an arbitrary page count. Note that moderncv and Awesome CV are
+    designed as multi-page templates — do not try to force their content onto
+    one page at the cost of readability.
+
+::: {.callout-tip title="If your content overflows onto a second page"}
+If you are using Jake's Resume or AltaCV and want to fit everything on one
+page, here are the standard $\LaTeX$ techniques in order of how disruptive
+they are:
+
+- **Trim bullet points first.** Cut each entry to one strong bullet instead
+  of two or three weak ones. Content editing is always the right first move.
+- **Reduce `\vspace` values** in the template preamble. Find lines like
+  `\vspace{-4pt}` and make them more negative (e.g., `-6pt`).
+- **Reduce the font size** in `\documentclass`: change `11pt` to `10pt`.
+- **Tighten `\itemsep`**: find `\setlength{\itemsep}` in the preamble and
+  reduce it.
+
+If you are using moderncv or Awesome CV, two pages is perfectly normal and
+expected — leave the layout alone.
+:::
+
+(@) When your content is complete, click **Recompile** and check the
+    **Logs and output files** (icon to the right of the Recompile button).
+    Confirm there are **no red errors**. Orange warnings are acceptable if
+    you document them in the Submission section — a common benign one is a
+    font encoding warning from `fontawesome` in moderncv and AltaCV.
+
+---
+
+### Set Up a Local `git` Repository for your Overleaf CV Project
+
+Your UC Merced Overleaf Pro account includes full **git integration**: your
+Overleaf project is a real git repository with Overleaf as the remote. You
+will clone it locally, add a `.gitignore`, download this notebook, and open
+everything as a single RStudio project.
+
+`git clone` does all the directory setup in one command — it creates the
+folder, initializes the repository, and downloads your files. You do not
+need `git init`.
+
+::: {.callout-important title="Windows / WSL2 students: use your WSL2 terminal for everything"}
+Everything here happens in your **WSL2 (Windows Subsystem for Linux 2) bash
+terminal** — the same one you have used all semester. Do not use Windows
+Explorer, PowerShell, or the Windows Downloads folder. Files created in WSL2
+are directly accessible from RStudio Server. Starting in the terminal and
+staying there avoids all filesystem-crossing problems.
+:::
+
+#### Step 1 — Authenticate with Overleaf: token, credential storage, and the clone
+
+Before you can clone your Overleaf project, git needs a way to prove to
+Overleaf that you are you. Overleaf uses a **personal authentication token**
+as your password for git operations. Here is the complete picture of how
+this works, so there are no surprises:
+
+1. You generate a token in Overleaf and copy it (this step).
+2. You tell git where to store credentials on your machine (this step).
+3. You run `git clone` — git prompts you **once** for a username and
+   password. You enter `git` as the username and paste your token as the
+   password.
+4. Git passes those credentials to the storage system you configured, which
+   saves them.
+5. **Every subsequent `git push`, `git pull`, or `git clone` to any
+   `git.overleaf.com` URL uses the stored token automatically — you are
+   never prompted again.**
+
+RStudio's Git tab is not involved in credential storage at all. When you
+push from the Git tab, RStudio calls the same system `git` binary, which
+calls the same credential storage — so the token you enter once during the
+clone works seamlessly from both the terminal and the RStudio Git tab.
+
+::: {.callout-caution title="Never commit your token to a repository"}
+Your token is a password. Do not paste it into your `.qmd`, your `.tex`
+file, or any file that will be committed to git. If you accidentally commit
+it, delete it in Overleaf Account Settings immediately and generate a new
+one.
+:::
+
+**Part A — Generate your token in Overleaf:**
+
+(@) In Overleaf: settings gear wheel (bottom left) → **Account Settings** →
+    scroll to **Git Integration** → **Your Git authentication tokens** →
+    **Add token** or  **Add another token**.
+
+(@) Copy the token immediately — **it will not be shown again**. Paste it
+    into a text file, password manager or a private note before closing the **Account Settings** page on Overleaf. If you lose it, delete it in **Account Settings** and generate a new one.
+
+**Part B — Tell git where to store the token on your machine:**
+
+Run the appropriate one-time command for your platform **now**, before you
+clone. This sets up the storage system so that when git prompts you during
+the clone, it knows where to save what you type.
+
+**macOS:**
+```bash
+git config --global credential.helper osxkeychain
+```
+
+This stores credentials in the macOS Keychain — encrypted and managed by
+the operating system. You can view or delete stored credentials in the
+**Keychain Access** app if needed.
+
+**WSL2 (Windows 11):**
+```bash
+git config --global credential.helper store
+```
+
+::: {.callout-caution title="WSL2 credential storage"}
+On WSL2, `credential.helper store` saves your token to `~/.git-credentials`
+as plaintext — a simple text file in your Linux home directory. This is
+acceptable on your personal machine. Do not use `store` on a shared or
+public computer, and do not share the contents of `~/.git-credentials` with
+anyone.
+
+If you ever need to update or remove a stored token (e.g., after generating
+a new one), you can edit `~/.git-credentials` directly in a text editor or
+delete it entirely and re-enter credentials on the next clone or push.
+:::
+
+::: {.callout-important title="What happens if you skip Part B?"}
+If you skip the `git config credential.helper` command, git has no storage
+system configured and will prompt you for your username and token on
+**every single push and pull**. This is not a security risk but it is very
+annoying. If you find yourself being prompted repeatedly, run the
+appropriate command above and then run `git push` once more to store the
+credentials.
+:::
+
+#### Step 2 — Get your Overleaf git URL and clone
+
+(@) In your Overleaf project on the sidebar, navigate to **Integrations → Git**. Copy the `git clone` URL command
+    from the pop-up. It looks like `git clone https://git.overleaf.com/6xxxxxxxxxxxxxxxxxxxxxxx`.
+     
+    **Note that the URL ends in a hex project ID, not a human-readable name.
+    You will supply a proper directory name in the clone command below.**
+
+(@) In your terminal, clone your CV repo locally from Overleaf and `cd` into the local repo directory:
+
+```bash
+mkdir -p ~/DSC-011-Sp26
+cd ~/DSC-011-Sp26
+git clone https://git.overleaf.com/6xxxxxxxxxxxxxxxxxxxxxxx DSC011-S26-Lab14-Final-Project-LaTeX-CV
+cd DSC011-S26-Lab14-Final-Project-LaTeX-CV
+```
+
+When git prompts you: enter **`git`** as the Username and **paste your
+token** as the Password. This is the one and only time you will be prompted.
+
+::: {.callout-caution title="Branch name: master not main"}
+Overleaf uses `master` as its default branch name, not `main`. If any git
+command complains about branch names, use `master` explicitly:
+`git push origin master`
+:::
+
+#### Step 3 — Add a .gitignore and download this notebook
+
+(@) Keep Quarto build artifacts and RStudio files out of your Overleaf
+    remote:
+
+```bash
+echo ".Rproj.user/" >> .gitignore
+echo ".Rhistory"    >> .gitignore
+echo ".RData"       >> .gitignore
+echo "_freeze/"     >> .gitignore
+echo ".quarto/"     >> .gitignore
+echo "*.html"       >> .gitignore
+echo ".DS_Store"    >> .gitignore
+```
+
+(@) Download this notebook from GitHub:
+
+```bash
+wget https://raw.githubusercontent.com/dhard/DSC011-S26-Lab14-Final-Project-LaTeX-CV/master/DSC011-S26-Lab14-Final-Project-LaTeX-CV_FirstName_LastName.qmd
+```
+
+If `wget` is unavailable, use `curl -O` with the same URL.
+
+::: {.callout-tip title="Why not just download with your browser?"}
+A Windows browser saves to your Windows `Downloads` folder — outside WSL2.
+`wget` or `curl` from the terminal puts the file exactly where you need it.
+:::
+
+#### Step 4 — Initial commit and open in RStudio
+
+(@) Commit the new files:
+
+```bash
+git add .gitignore DSC011-S26-Lab14-Final-Project-LaTeX-CV_FirstName_LastName.qmd
+git status
+git commit -m "Add notebook and gitignore"
+```
+
+(@) Open RStudio. Go to **File → New Project → Existing Directory**,
+    navigate to
+    `~/DSC-011-Sp26/DSC011-S26-Lab14-Final-Project-LaTeX-CV/`, click
+    **Create Project**.
+
+(@) Open this `.qmd` file and replace `FirstName LastName` in the `author:`
+    field with your actual name. Save the file.
+
+::: {.callout-note title="RStudio's Git tab"}
+RStudio's **Git** tab (top-right pane) is bound to this repository, whose
+remote is Overleaf. You can use it to stage, commit, and push any file —
+including your `.tex` CV source. Pushing from the Git tab pushes to
+Overleaf, exactly like `git push origin master` from the Terminal pane.
+Both use the token you stored during the clone — no re-authentication
+needed. Use whichever you prefer.
+:::
+
+---
+
+### Locally Edit Your CV and Complete a "Git Round-Trip" (edit, commit, push)
+
+#### Step 1 — Edit your .tex file in RStudio and Add Required $\LaTeX$ Feature to Your CV
+
+To earn full marks on Technical Proficiency you must use **at least one
+non-trivial $\LaTeX$ feature** beyond filling in placeholder text. 
+
+**Choose one:**
+
+- `\href{URL}{display text}` — a clickable hyperlink using your UC Merced
+  email (`mailto:`), GitHub profile, or LinkedIn profile *(easiest —
+  recommended; see options below)*
+- A custom `\section` not in the original template (e.g., *Relevant
+  Coursework*)
+- Changing the template's color theme or font via a documented package
+  option (e.g., moderncv's `\moderncvcolor{blue}`)
+
+::: {.callout-tip title="Choosing a URL for your hyperlink"}
+The `\href` command takes any valid URL. Choose the option that fits your
+situation — every student has at least one good option here.
+
+**Option 1 — UC Merced email** *(works for everyone, no account needed)*
+
+The simplest choice. A `mailto:` link is standard on professional CVs and
+requires nothing beyond your existing UC Merced email:
+
+```latex
+\href{mailto:jdoe@ucmerced.edu}{jdoe@ucmerced.edu}
+```
+
+**Option 2 — GitHub profile** *(recommended if you have one or want to
+create one)*
+
+GitHub is a platform for sharing and version-controlling code. Having a
+profile signals to PIs and employers that you work with code professionally.
+If you already have an account, use it. If you want to create one, go to
+[github.com](https://github.com), choose a professional username (ideally
+your real name or a close variant), and create a free account — you do not
+need any repositories yet:
+
+```latex
+\href{https://github.com/your-github-username}{github.com/your-github-username}
+```
+
+**Option 3 — LinkedIn profile** *(if you already have one)*
+
+```latex
+\href{https://linkedin.com/in/your-linkedin-username}{linkedin.com/in/your-linkedin-username}
+```
+
+Whichever URL you choose, replace the placeholder in both the `https://`
+argument and the display text with your real information before committing
+and pushing.
+:::
+
+---
+
+
+(@) In the **Files** pane (bottom right), click your main `.tex` file to
+    open it. RStudio provides syntax highlighting — no separate $\LaTeX$
+    editor needed.
+
+(@) Add your `\href` hyperlink (your required $\LaTeX$ feature) to the contact or header section of the CV. Use whichever URL option fits your situation — UC
+    Merced email, GitHub, or LinkedIn — as described in Section 6. For
+    example:
+
+```latex
+\href{mailto:jdoe@ucmerced.edu}{jdoe@ucmerced.edu}
+```
+
+Save with <kbd>Ctrl</kbd>+<kbd>S</kbd> (WSL2/Windows) or
+<kbd>Cmd</kbd>+<kbd>S</kbd> (macOS).
+
+#### Step 2 — Commit and push to Overleaf
+
+(@) In the **Terminal** pane (or your external terminal):
+
+```bash
+git add -A
+git status
+git commit -m "Add GitHub profile link"
+git push origin master
+```
+
+#### Step 3 — Verify on Overleaf
+
+(@) Return to Overleaf, click **Recompile**, and confirm your local edit is
+    visible and the PDF still compiles with zero errors.
+
+#### Step 4 — Capture your Live `git` log in Assignment Notebook Render
+
+The chunk below validates your repository and runs `git log --oneline` each
+time you render. A descriptive error message will appear if something is
+wrong — fix it and re-render.
+
+```{bash}
+#| label: git-log-cv
+#| eval: true
+#| error: true
+
+# --- render guard ---
+if [ ! -d ".git" ]; then
+  echo "ERROR: No git repository found in the current directory."
+  echo "       Make sure this notebook is inside the cloned project:"
+  echo "         ~/DSC-011-Sp26/DSC011-S26-Lab14-Final-Project-LaTeX-CV/"
+  exit 1
+fi
+
+REMOTE=$(git remote get-url origin 2>/dev/null)
+if [[ "$REMOTE" != *"git.overleaf.com"* ]]; then
+  echo "ERROR: This repository's remote does not point to Overleaf."
+  echo "       Remote found: ${REMOTE:-none}"
+  echo "       Expected a URL containing git.overleaf.com"
+  exit 1
+fi
+
+# --- all checks passed ---
+echo "Overleaf remote: $REMOTE"
+echo ""
+git log --oneline
+```
+
+::: {.callout-tip title="What the grader is looking for"}
+Your `git log --oneline` output must show **at least three commits**: the
+Overleaf template commit, your "Add notebook and gitignore" commit, and
+your local `.tex` edit commit. Messages like `"asdf"` or `"edit"` will cost
+points — write a message that describes what you actually changed.
+:::
+
+#### Step 5 — Examine R Audit of your CV Source
+
+::: {.callout-note title="Why this chunk exists — and why it can only run locally"}
+Overleaf compiles your `.tex` file to PDF, but it cannot run R against it.
+Here, R reads your `.tex` source directly as a text file, parses its
+structure, and produces a structured audit report — checking for required
+content and leftover placeholder text. This is a small but real example of
+the local pipeline advantage: your local RStudio environment can combine R
+and $\LaTeX$ in ways the Overleaf browser editor cannot. The same principle
+scales up — researchers use local pipelines to auto-generate figures, tables,
+and bibliography entries that are pushed into Overleaf via git.
+
+This chunk runs every time you render the notebook. If your `.tex` file is
+not yet present you will see a message below — complete the Overleaf clone
+in the previous section and re-render.
+:::
+
+```{r}
+#| label: cv-audit
+#| eval: true
+#| error: true
+
+# --- find the main .tex file ---
+tex_files <- list.files(pattern = "\\.tex$", full.names = FALSE)
+tex_files <- tex_files[!grepl("^\\.", tex_files)]
+
+if (length(tex_files) == 0) {
+  stop(paste(
+    "SKIPPED: No .tex file found in the project directory.",
+    "Make sure you have cloned your Overleaf project and",
+    "this notebook is at the project root.",
+    sep = "\n"
+  ))
+}
+
+tex_file <- tex_files[1]
+cat("Auditing:", tex_file, "\n")
+cat(rep("-", 50), "\n", sep = "")
+
+lines <- readLines(tex_file, warn = FALSE)
+
+# --- extract document body only ---
+start <- which(grepl("\\\\begin\\{document\\}", lines))[1]
+end   <- which(grepl("\\\\end\\{document\\}",   lines))[1]
+body  <- if (!is.na(start) && !is.na(end)) lines[start:end] else lines
+
+# --- strip comment lines and blank lines ---
+body_nocomment <- body[!grepl("^\\s*%", body)]
+body_nocomment <- body_nocomment[nzchar(trimws(body_nocomment))]
+
+# --- prose lines: lines containing actual words, not pure LaTeX commands ---
+prose_lines <- body_nocomment[
+  grepl("[A-Za-z]{3,}", body_nocomment) &
+  !grepl("^\\s*\\\\[A-Za-z]+\\s*[\\{\\[]?$", body_nocomment)
+]
+
+# --- word count from prose lines ---
+words <- unlist(strsplit(prose_lines, "\\s+"))
+words <- words[nchar(words) >= 2]
+words <- words[!grepl("^\\\\|^\\{|^\\}|^%", words)]
+word_count <- length(words)
+
+cat("\nDocument body\n")
+cat("  Total lines in body:  ", length(body), "\n")
+cat("  Non-comment lines:    ", length(body_nocomment), "\n")
+cat("  Prose-bearing lines:  ", length(prose_lines), "\n")
+cat("  Estimated word count: ", word_count, "\n")
+
+# --- content sufficiency heuristic ---
+cat("\nContent check: ")
+if (word_count >= 150) {
+  cat("PASS — word count (", word_count, ") meets minimum threshold of 150.\n", sep = "")
+} else if (word_count >= 80) {
+  cat("MARGINAL — word count (", word_count, ") is low. ",
+      "Is your CV substantively filled in?\n", sep = "")
+} else {
+  cat("WARNING — word count (", word_count, ") is very low. ",
+      "Your CV may not be fully edited.\n", sep = "")
+}
+
+# --- href / hyperlink check ---
+href_count <- sum(grepl("\\\\href\\{", body))
+cat("\n\\href hyperlinks: ", href_count)
+if (href_count == 0) {
+  cat("  <-- WARNING: none found. Have you added your required LaTeX feature?")
+}
+cat("\n")
+
+# --- placeholder text check ---
+placeholders <- c(
+  "Your Name", "youremail@", "your@email",
+  "City,\\s*State", "github\\.com/yourusername",
+  "linkedin\\.com/in/yourusername", "University Name",
+  "Degree Name", "Job Title", "Company Name",
+  "Description of", "your city", "Your University",
+  "Month 20XX", "Job description \\d",
+  "Project \\d", "Funding agency", "Lorem ipsum"
+)
+placeholder_pattern <- paste(placeholders, collapse = "|")
+hits <- grep(placeholder_pattern, body, value = TRUE, ignore.case = TRUE)
+hits <- trimws(hits)
+hits <- hits[nchar(hits) > 0 & !grepl("^%", hits)]
+
+cat("\nPlaceholder check: ")
+if (length(hits) == 0) {
+  cat("PASS — no obvious placeholder text detected.\n")
+} else {
+  cat("WARNING —", length(hits), "possible unedited placeholder line(s):\n")
+  for (h in head(hits, 6)) cat("  !", trimws(h), "\n")
+  if (length(hits) > 6) cat("  ... and", length(hits) - 6, "more.\n")
+}
+
+# --- summary ---
+cat("\n", rep("-", 50), "\n", sep = "")
+cat("File:             ", tex_file, "\n")
+cat("Total file lines: ", length(lines), "\n")
+cat("Body lines:       ", length(body), "\n")
+cat("Est. word count:  ", word_count, "\n")
+cat("\\href count:      ", href_count, "\n")
+cat("Placeholder hits: ", length(hits), "\n")
+```
+
+::: {.callout-tip title="What the grader is looking for in this chunk"}
+The audit should show: **estimated word count ≥ 150** (a substantive,
+fully filled-in CV); **≥ 1 `\href`** for the required $\LaTeX$ feature; and
+**no placeholder warnings**. These checks are template-agnostic — they work
+regardless of which template you chose. A clean audit with a healthy word
+count is evidence that your CV is genuinely complete, not a lightly edited
+placeholder.
+:::
+
+---
+
+### Make Your Final Commit and Submit Your Work
+
+(@) **Fill in all fields in the following section:**
+
+**Your Overleaf project link:**
+
+```
+https://www.overleaf.com/project/   ← paste your project URL here
+```
+
+**Template chosen:** *(Jake's Resume / moderncv / AltaCV / Awesome CV / other)*
+
+**Compiler used:** *(pdflatex / XeLaTeX / LuaLaTeX)*
+
+**Non-trivial $\LaTeX$ feature used:**
+
+*(One sentence: what feature, and where it appears in your CV.)*
+
+**Git log — live output:** *The `git-log-cv` chunk above must show
+clean output with ≥ 3 commits in your rendered HTML.*
+
+**Compile log — warnings (if any):**
+
+*(List each warning and a one-sentence explanation. Write "None" if clean.)*
+
+(@) Render this notebook:
+
+```bash
+quarto render DSC011-S26-Lab14-Final-Project-LaTeX-CV_FirstName_LastName.qmd
+```
+
+(@) Make a final commit and push:
+
+```bash
+git add -A
+git commit -m "Complete Lab 14: final render and submission"
+git push origin master
+```
+
+(@) Rename your output files to include your actual name before uploading:
+
+```
+DSC011-S26-Lab14-Final-Project-LaTeX-CV_JaneDoe.html
+DSC011-S26-Lab14-Final-Project-LaTeX-CV_JaneDoe.pdf
+```
+
+(@) **Submit both the `.html` render of this notebook and the `.pdf` of your
+    final CV to CatCourses.**
+
+---
+
+## Session Info
+
+```{r}
+#| label: session-info
+sessionInfo()
+```
